@@ -1,0 +1,87 @@
+
+
+class Solution{
+
+/**
+ * Definition for a binary tree node.
+Binary Search tree is one in which all nodes to the left are less and all nodes to right are greater then the root.
+
+ */
+public:
+    bool isValidBST(TreeNode* root) {
+        stack<TreeNode*> st;
+        TreeNode* previous = nullptr;
+        
+        while(root != nullptr || !st.empty()){
+            while(root != nullptr){
+                st.push(root);
+                root=root->left;
+            }
+            
+            root = st.top();
+            st.pop();
+            
+            if(previous != nullptr && previous->val >= root->val) return false;
+            
+            previous = root;
+            root=root->right;
+        }
+        return true;
+    }
+};
+
+/*Could have easily skipped this and found a nice simple recursive method
+but I truly only learn things when I am struggling and experience it so I went all out here is my description.
+
+1.) create variables; previous a TreeNode Stack<TreeNode*>
+2.)start while loop 1
+	conditions 2x:
+	 a root value || non empty stack
+	3.) inner while loop
+		conditions a. root has a node
+			actions a. push root on the top of the stack;
+				b. move root to the next left node
+			
+			path    a. down to the left most path first
+				b. when root hits a dead end;
+				c. and stack has values break
+
+				
+	4.) Post loop operations 
+		a. change the null root to top of the stack (bottom most node not null)
+		b.)pop the stack() top.
+
+	5.) If statemment
+		conditions a. previous == nullptr
+			   b. prev-val is greater than root val) 
+				Both need to be true
+
+	6.) Post if first outter while loop wrap up
+		a. make previous = root(starts at the lowest possible left node)
+		b. make root = right a level down(should always be larger than previous(and pass the last if statement)
+	7.) repeated inner loop until root is null and stack is empty.
+		
+Path
+1.)Left most nodes left nullptr
+2.)Back to the first non null left
+3.)last non-null left move root to the next right node
+	a) if a value on the right node
+		result  a.) push that right node on to the stack
+		        b.) check to see if right node has a lower left node 
+			c.) repeat while loop
+	b.) right node = nullptr
+		result a.)break loop
+		       b.)reset root to the level before the lowest node
+		       c.)pop that stack
+	c.) check previous(which should be the lowest left value and equal to root if the orginal far left node was a leaf)
+		result a.)if the prev (left most node) is less than or equal to its parent return false;
+		       b.)previous is a leaf node so move it where root is.
+		       c.)move root from previous to the next right.
+		       d.)repeate starting a lower than previous right node.
+1.)Path check if right is not null or if stack is empty
+	2.)place root in stack and move left if the node is not null;
+	3.)when left hits null use the stack to get it to the bottom most node
+	4.)after changing back from null go try the next right
+
+
+*/
