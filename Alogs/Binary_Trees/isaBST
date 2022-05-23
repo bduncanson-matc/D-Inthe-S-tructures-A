@@ -85,3 +85,19 @@ Path
 
 
 */
+//Recursive method
+class Solution {
+private:
+    bool solve(TreeNode* root, long long minValue, long long maxValue){ //min and max are the max top root node
+        if(!root) return true;  //passing a null value means it made to the bottom and is tgrue
+        
+        if(root->val <= minValue || root->val >= maxValue) return false; //if a root val vrs, the two other args.
+        
+        return solve(root->left, minValue, root->val) && solve(root->right, root->val, maxValue);  //if it makes it here call the function on the given roots left and right nodes;
+    } //the left will use the minVal = minVal && root->val as the maxValue and the - the right cal has it's minValue = root->val && maxValue = maxValue; 
+
+public:
+    bool isValidBST(TreeNode* root) {
+        return solve(root, LLONG_MIN, LLONG_MAX); //call the helper function from the top root and let the solve fu
+    }
+};
