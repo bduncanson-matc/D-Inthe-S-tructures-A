@@ -28,3 +28,20 @@ public:
         reverse(s.rbegin(),s.rend());  //reverse the entire string since the words are backwards and opposite of their possistion.
     }
 };
+
+/*
+Write a function that reverses a string. The input string is given as an array of characters s.
+Input: s = ["h","e","l","l","o"]
+Output: ["o","l","l","e","h"]
+*/
+class Solution {
+public:
+    void swapChars(vector<char>::iterator f, vector<char>::iterator b){
+   if(f+1 == b) return;
+   swap(*(f++), *(--b));   
+if(f!=b) return swapChars(f,b);
+  }
+    void reverseString(vector<char>& s) {
+     swapChars(s.begin(),s.end());
+    }
+};
