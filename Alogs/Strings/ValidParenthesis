@@ -1,0 +1,64 @@
+/*valid parenthesis
+Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+An input string is valid if:
+Open brackets must be closed by the same type of brackets.
+Open brackets must be closed in the correct order.
+*/
+//not working shell
+class Solution {
+public:
+    bool isValid(string s) {
+        unordered_map<int,int> validationMap;
+        vector<pair<char,char>> chars = {
+        pair<char,char>('(',')'),
+        pair<char,char>('[',']'),
+        pair<char,char>('{','}')
+        };
+        validationMap[0] = 1;
+        validationMap[1] = 1;
+        validationMap[2] = 1;
+        for(auto c : s){
+           for(int i =0; i < 3;++i){
+               if(chars[i].first == c){
+                   validationMap[i]++; 
+               }else if(chars[i].second == c){
+                   validationMap[i]--;
+                   if(validationMap[i] < 1) return false;
+               }
+            }
+        }
+        for(auto [x,y] : validationMap){
+            if(y != 1)
+                return false;
+        }
+        return true;
+    }
+};
+//working stack solution
+class Solution {
+public:
+    bool isValid(string s) {
+     stack<char> st;
+     unordered_map<char,char> paraMap;  //to map closing strings
+     paraMap[')']= '(';
+     paraMap['}']= '{';
+     paraMap[']']= '[';
+    for(auto c: s){
+        if(c == '(' || c == '[' || c == '{'){ //push to the stack, stack allows to catch incorrectly closed pairs
+           st.push(c);
+        }else{
+           if(st.empty()){ //if not one of the three chars above its a closing char and if no opening char are in the stack we know its false
+              return false;
+           }else{
+              if(st.top() == paraMap[c]) {  //use map to determine if closing parenth in the for loop matches the last opening char
+              
+          st.pop();
+         }else{
+        return false;
+      }
+       }
+    } 
+    }
+    return st.empty(); // if the stack is empty all parenthesis have been closed
+    }
+};
